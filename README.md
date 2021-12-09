@@ -18,5 +18,7 @@ And finally, as in my case the computer where the script will be listening to re
 Anyway, hope you don't dislike my terrible code, and that all that should be credited, were done so properly!
 
 # Compiling
-```g++ main.cpp -o discord-rpc-ytmusic ./discord-rpc/lib/libdiscord-rpc.a -lpthread```
+```
+g++ main.cpp -o discord-rpc-ytmusic ./discord-rpc/lib/libdiscord-rpc.a -lpthread
+```
 If it fails, you may need to recompile the discord-rpc library, as stated in that repo.
