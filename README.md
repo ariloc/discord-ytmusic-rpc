@@ -16,3 +16,7 @@ In order to listen for requests in a certain port with C++, I made use of socket
 And finally, as in my case the computer where the script will be listening to requests is running Linux with no GUI, I have to be running an instance of Xorg with a "dummy screen" configuration so Discord can run properly (refer to [https://askubuntu.com/questions/453109/add-fake-display-when-no-monitor-is-plugged-in](https://askubuntu.com/questions/453109/add-fake-display-when-no-monitor-is-plugged-in)).
 
 Anyway, hope you don't dislike my terrible code, and that all that should be credited, were done so properly!
+
+# Compiling
+```g++ main.cpp -o discord-rpc-ytmusic ./discord-rpc/lib/libdiscord-rpc.a -lpthread```
+If it fails, you may need to recompile the discord-rpc library, as stated in that repo.
