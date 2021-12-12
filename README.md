@@ -37,6 +37,8 @@ The only step remaining to make it work fully is to include the `headers_auth.js
 
 For reference, I got mine by running a python interactive shell, importing the library, and using the `setup(filepath="")` command as described in the aforementioned link. After that, you can just copy the file to the folder where the executable `discord-ytmusic-rpc` is in.
 
+About the requests, the program by default listens in port `15472` (no reason, just an arbitrary number). If you want to change it, it's defined in the `socket.h` file. I know it's not the best to have constants in header files... but it works and I spent already much more time into this that I should've.
+
 # Screenshots
 
 WIP
