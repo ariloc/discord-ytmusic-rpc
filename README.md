@@ -37,6 +37,14 @@ The only step remaining to make it work fully is to include the `headers_auth.js
 
 For reference, I got mine by running a python interactive shell, importing the library, and using the `setup(filepath="")` command as described in the aforementioned link. After that, you can just copy the file to the folder where the executable `discord-ytmusic-rpc` is in.
 
+# Screenshots
+
+WIP
+
 # Set up Xorg and Discord
 
 Work in Progress, dedicated folder *should* be added soon.
+
+# Phone automation of the requests
+
+WIP
