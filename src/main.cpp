@@ -15,6 +15,7 @@
 #include <sys/wait.h>
 #include <signal.h>
 #include <iostream>
+#include <fstream>
 
 #include "socket.h"
 
@@ -40,13 +41,24 @@ void atExitRun() {
     Discord_Shutdown();
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+    char *headers_auth_path = NULL;
+    if (argc == 2) {
+        std::ifstream f(argv[1]);
+        if (f.good()) headers_auth_path = argv[1];
+    }
+    if (!headers_auth_path)
+        fprintf(stderr,"WARNING: No valid path provided for the authentication headers.\n"
+                       "Remember to provide it as an argument. For more information, look it up in the repo.\n"
+                       "No URLs will be fetched, and they will ONLY be available if provided in the JSON requests.\n\n");
+
     discordInit();
 
     Py_Initialize();
     PyObject *ytmusicapi = PyImport_ImportModule("ytmusicapi");
     PyObject *ytmusic = PyObject_GetAttrString(ytmusicapi, "YTMusic");
-    ytmusic = PyObject_CallFunctionObjArgs(ytmusic, Py_BuildValue("s",HEADERS_AUTH_PATH));
+    ytmusic = PyObject_CallObject(ytmusic, 
+                                 (headers_auth_path ? PyTuple_Pack(1,Py_BuildValue("s",headers_auth_path)) : NULL));
 
     signalHandlerSetup();
     std::atexit(atExitRun);

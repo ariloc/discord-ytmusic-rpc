@@ -23,7 +23,6 @@
 using json = nlohmann::json;
 
 static const char* BASE_URL = "https://music.youtube.com/watch?v=";
-static const char* HEADERS_AUTH_PATH = "headers_auth.json";
 
 /*
  * Given an `upd_struct` element with the track information, look for the specified
