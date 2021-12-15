@@ -39,7 +39,7 @@ The only step remaining to make it work fully is to get the `headers_auth.json` 
 ./discord-ytmusic-rpc "./headers_auth.json"
 ```
 
-This is, again, for the purpose of getting the exact URL to the song you're actually playing. Bear in mind this is not foolproof, and sometimes the request may be faster than the history gets updated (and therefore the "Listen Along" button won't be shown), so maybe you would want to have a little bit of delay on your requests from your phone.
+This is, again, for the purpose of getting the exact URL to the song you're actually playing. Bear in mind this is not foolproof, and sometimes the request may be faster than the history gets updated (and therefore the "Listen Along" button won't be shown), so maybe you would want to have a little bit of delay on your requests from your phone. Also note that rich presence updates are limited to one in 15 seconds [as stated in the documentation](https://discord.com/developers/docs/rich-presence/how-to), so it's also to expect if an update isn't refflected immediately if you throw a bunch of them too quickly.
 
 About the requests, the program by default listens in port `15472` (no reason, just an arbitrary number). If you want to change it, it's defined in the `socket.h` file. I know it's not the best to have constants in header files... but it works and I spent already much more time into this that I should've.
 
