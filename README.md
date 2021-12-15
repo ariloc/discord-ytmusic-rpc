@@ -56,13 +56,52 @@ The program expects HTTP requests with a JSON formatted content. It really just 
 * `position`: **\[optional\]** An integer representing the amount of time elapsed from the start of the song, expressed in millis. Both `duration` and `position` need to be provided to show any time-related information.
 * `url`: **\[optional\]** A *VALID* link to the song. If the provided link is invalid, rich presence may not be shown. Otherwise if missing, it will be automatically fetched from the song history if the authentication headers are properly setup.
 
+# Set up Xorg and Discord
+
+As I said in the intro, I'll be using a configuration file which specifies a dummy screen, i.e. a screen that doesn't exist, to be able to run Xorg. That configuration file is included in the *Xorg* folder. Of course for this you'll need to install `xorg` itself. In Debian for example, the easiest way would be by running the following command:
+
+```
+sudo apt install xorg
+```
+
+The same goes for installing Discord, which as far as I know can be a little troublesome depending on your distro. Note that I've tested the program in Debian and Archlinux, but in theory should work in any Linux distro. In the case of Debian, for example, I've installed it using the provided .deb file.
+
+And if you were wondering at this point about making it run in Windows, you'll surely have to see a way of running make, modifying the Makefile to link correctly with Python, amongst other issues. The Xorg step also doesn't apply at all in Windows. As I see no personal use for making it run in Windows, I haven't explored it at all, but you're free to do so if you want.
+
+Going back to the topic, you'll probably need to login into your Discord account for all of this to work. As far as I know, you can't login through the terminal, and therefore you'll need an actual display to access the GUI. The most convenient way I found to do this, is using X11 forwarding through SSH. This way, I can ssh to my server from a PC running a Linux desktop, adding the `-X` argument when connecting. With this, when I ran the `discord` command on the terminal, a new window appeared in the computer where I was ssh'ing from, so I was able to successfully login and close the program. As long as I open Discord often enough, I shouldn't have to login again, at least in my experience.
+
+To then run Discord with the "dummy display" configuration file, you can use this command:
+
+```
+xinit discord -- :1 -config /path/to/dummy/config
+```
+
+`xinit` will start both Xorg and then Discord (as it needs X to be running), with the config file we specified. I tell it to run in display 1, to avoid any possible conflicts. You can change the display number by replacing the part `:1` with the display number you want. If you don't know what any of this means, I sort of understand it as that each Xorg instance runs in a different display number, so it works like an identifier for each instance. **This explanation may be very well just wrong**, but what I *think* do know, is that you ***don't want** to pick a low number*, as it's more probable that if you're actualy already running Xorg in your system, lower number displays may be already in use. You can just keep changing and trying, until there's no error related to an already running instance in a certain display.
+
+I had issues with this command though, unless I ran it as a superuser. There are ways of avoiding this to make it more secure, but you'll probably stumble with issues related to permissions. The solution that worked for me is the modification to the `Xwrapper.conf` file [suggested in this gist](https://gist.github.com/alepez/6273dc5220c1c5ec5f3f126e739d58bf). Though I'm not sure how secure it is, given [the manual for the file](https://manpages.debian.org/stretch/xserver-xorg-legacy/Xwrapper.config.5.en.html) describes the `needs_root_rights` as whether or not to drop root rights when running the server. 
+I also tried before adding the user to the `tty` group, with the command `usermod -a -G tty user` (I think), just so you know if the previous solution isn't enough.
+
+Anyway, the mentioned solution allowed me to run the command with `cron`, which is a job scheduler, and adding the following line after using the `crontab -e` command while logged in as `user` makes it so it runs on boot:
+
+```
+@reboot xinit discord -- :1 -config ./relative/path/to/dummy/config
+```
+
+Note that the config path must be a relative path, and not an absolute path, as a consequence of the previous modifications to `Xwrapper.conf`. I wanted to find a solution for this, but I couldn't find anything. So for this, just remember than cron runs tasks in the home directory of the user, and therefore you have to specify a relative path from that folder.
+
+As well as I used `cron` to start Discord with Xorg on boot, I can also start the executable itself (already compiled) with cron. As you might have guessed, it's a matter of appending another line starting with `@reboot` followed by the command to run:
+
+```
+@reboot /path/to/compiled/executable /path/to/authentication/headers
+```
+
+Here we can use absolute paths if we want, and don't forget to specify the path to the authentication headers file. All `cron` jobs are run in the background, so you don't have to worry about them much.
+
+You can just reboot, wait a bit for Discord and Xorg to start properly, and you should be done with this part. There shouldn't even be a need to login for it to work.
+
 # Screenshots
 
 WIP
-
-# Set up Xorg and Discord
-
-Work in Progress, dedicated folder *should* be added soon.
 
 # Phone automation of the requests
 
