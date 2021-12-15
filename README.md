@@ -23,7 +23,7 @@ Anyway, hope you don't dislike my terrible code, and that all that should be cre
 
 The `build.sh` file included should do all the work for you. It's nothing really fancy, but it should work. 
 
-First it checks (or at least it should) if you have installed the right dependencies. You'll need `g++`, `cmake` and `python3.9`. As far as I know, it should work with any version of `python3`, but due to issues when including the python library and headers, I found no easy way to make it work without being dependant on the specific version. So it's kind of hardcoded in the Makefile, but you can try to modify it if you have a different version installed (and modify `build.sh` so it doesn't stop on error).
+First it checks (or at least it should) if you have installed the right dependencies. You'll need `g++`, `cmake` and `python3`. As far as I know, it should work with any version of `python3`, but I've tested it working with 
 
 Also, about python, you'll need the unofficial YouTube Music API module by [sigma67](https://github.com/sigma67/). If you skipped the introduction, [here's the repo again](https://github.com/sigma67/ytmusicapi) and you can follow [here](https://ytmusicapi.readthedocs.io/en/latest/setup.html) instructions in how to install it.
 
