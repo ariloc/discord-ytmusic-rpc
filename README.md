@@ -33,11 +33,28 @@ Once that's done, it runs `make` which compiles the actual source files and link
 
 # Making it work
 
-The only step remaining to make it work fully is to include the `headers_auth.json` file in the same folder as the executable. The purpose of this file is to be able to perform authenticated requests in your Google account, and fetch your song history. How to get it [it's better explained in the unofficial YouTube Music API documentation](https://ytmusicapi.readthedocs.io/en/latest/setup.html).
+The only step remaining to make it work fully is to get the `headers_auth.json` file. The purpose of this file is to be able to perform authenticated requests in your Google account, and fetch your song history. How to get it [it's better explained in the unofficial YouTube Music API documentation](https://ytmusicapi.readthedocs.io/en/latest/setup.html). For reference, I got mine by running a python interactive shell, importing the library, and using the `setup(filepath="")` command as described in the aforementioned link. After that, you can just copy the file whereever you want, and remember to specify the path as an argument to the executable. As an example, if you're using Linux and the file is in the same folder, you can run the program the following way:
 
-For reference, I got mine by running a python interactive shell, importing the library, and using the `setup(filepath="")` command as described in the aforementioned link. After that, you can just copy the file to the folder where the executable `discord-ytmusic-rpc` is in.
+```
+./discord-ytmusic-rpc "./headers_auth.json"
+```
+
+This is, again, for the purpose of getting the exact URL to the song you're actually playing. Bear in mind this is not foolproof, and sometimes the request may be faster than the history gets updated (and therefore the "Listen Along" button won't be shown), so maybe you would want to have a little bit of delay on your requests from your phone.
 
 About the requests, the program by default listens in port `15472` (no reason, just an arbitrary number). If you want to change it, it's defined in the `socket.h` file. I know it's not the best to have constants in header files... but it works and I spent already much more time into this that I should've.
+
+The program expects HTTP requests with a JSON formatted content. It really just ignores the HTTP headers, so any errors thrown (if any) are from the validation of the provided JSON. The fields you can use are the following:
+
+* `state`: **\[REQUIRED\]** A single integer that represents the playback state.
+  * `0`: Stopped playing (clear Discord Rich Presence). Any other fields will be ignored in this case.
+  * `1`: Playing
+  * `2`: Paused
+* `song`: **\[REQUIRED when `status = 0` or `status = 1`\]** The song title.
+* `artist`: **\[REQUIRED when `status = 0` or `status = 1`\]** The artist name.
+* `album`: **\[optional\]** The album name.
+* `duration`: **\[optional\]** An integer representing the duration of the song, expressed in millis.
+* `position`: **\[optional\]** An integer representing the amount of time elapsed from the start of the song, expressed in millis. Both `duration` and `position` need to be provided to show any time-related information.
+* `url`: **\[optional\]** A *VALID* link to the song. If the provided link is invalid, rich presence may not be shown. Otherwise if missing, it will be automatically fetched from the song history if the authentication headers are properly setup.
 
 # Screenshots
 
