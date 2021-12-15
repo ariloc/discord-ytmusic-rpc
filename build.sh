@@ -1,7 +1,7 @@
 #! /bin/bash
 
 echo "Checking dependencies... "
-for name in cmake g++ python3.9
+for name in cmake g++ python3
 do
     if command -v $name >/dev/null 2>&1;
     then
@@ -12,6 +12,16 @@ do
     fi
 done
 echo -e "All dependencies OK.\n"
+
+echo -n "Checking if ytmusicapi module installed... "
+python3 -c "import ytmusicapi" >/dev/null 2>&1
+if [ $? -eq 0 ]; then
+    echo -e "OK\n"
+else
+    echo "FAIL"
+    echo "Please install the ytmusicapi module. Check out the README at the repo for more info."
+    exit 1
+fi
 
 echo "Entering source folder..."
 cd ./discord-rpc-buttons
