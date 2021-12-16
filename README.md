@@ -101,7 +101,11 @@ You can just reboot, wait a bit for Discord and Xorg to start properly, and you 
 
 # Screenshots
 
-WIP
+In order to be able to show presence updates on Discord, I had to create an application from the [Discord Developer Portal](https://discord.com/developers/applications). This way, the program is made such that it works with the assets uploaded for a certain application ID, which is defined in a constant variable in the `presence.h` file. As I am the only one able to modify the mentioned application, you could modify the variables so it works with your own if you want to do so.
+
+Below there are some screenshots of the app and presence working.
+
+**WIP**
 
 # Automation of the requests from the phone
 
@@ -111,6 +115,6 @@ However, I also made a working example in Automate by LlamaLab, [which you can g
 
 I'm **not related** to any of these apps, **nor promoting** them. I just use Automagic for other things, so it seemed convenient for me, and I thought it would also be nice making an alternative example in an app which is free, easier to download, and probably has a wider user base.
 
-Both flows for each of the apps are included in the *automation* folder.
+Both flows for each of the apps are included in the *automation* folder. Remember to change inside the flows where it says *server_ip* with the IP address of the computer running the executable. You can see how to import them in the apps, but you should be able to click them from a file manager and let it suggest you open it automatically with the automation app which will then import it accordingly.
 
 As I spent more time in the Automagic one, it also tries to fix a bug I noticed in YouTube Music, where the album name informed by the app gets stuck on the one from a previous song, when a video is played from the queue. To achieve this, I only send the album name in the JSON request whenever the thumbnail of the playing media has a 1: 1 aspect ratio, which is the one typically for the album art of actual songs (not videos). The possibility of a video with a 1: 1 aspect ratio playing exists, but the possibility seems very slim to me, and this is the most reliable method I could get to work, in order to differentiate between songs and videos playing. You can modify the flow as you please, whether you prefer or not this fix.
