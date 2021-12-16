@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<data version="1.37.0">
+  <trigger type="media_session_changed">
+    <useDefaultName>true</useDefaultName>
+    <name>Media Session Changed: com.google.android.apps.youtube.music</name>
+    <enabled>true</enabled>
+    <packageNameFilter>com.google.android.apps.youtube.music</packageNameFilter>
+  </trigger>
+  <action type="http_request">
+    <useDefaultName>true</useDefaultName>
+    <name>HTTP Request: POST http://[server_ip]:15472 application/json {data,jsonformat} store in response</name>
+    <url>http://[server_ip]:15472</url>
+    <verifyCertificates>false</verifyCertificates>
+    <basicAuthentication>false</basicAuthentication>
+    <username></username>
+    <clientCert>false</clientCert>
+    <clientCertPath></clientCertPath>
+    <httpMethod>POST</httpMethod>
+    <networkType>DEFAULT</networkType>
+    <httpContentType>GENERAL_TEXT</httpContentType>
+    <contentType>application/json</contentType>
+    <generalTextData>{data,jsonformat}</generalTextData>
+    <formFieldList>Lastname=XYZ,Firstname=ABC</formFieldList>
+    <uploadFieldName>upload_field</uploadFieldName>
+    <uploadFilePath></uploadFilePath>
+    <timeout>60000</timeout>
+    <setCustomHTTPHeaders>false</setCustomHTTPHeaders>
+    <customHTTPHeaders></customHTTPHeaders>
+    <storeInVariable>true</storeInVariable>
+    <variable>response</variable>
+    <path>/storage/emulated/0/Download/file.bin</path>
+    <followRedirects>true</followRedirects>
+  </action>
+  <action type="script">
+    <useDefaultName>true</useDefaultName>
+    <name>Script: /* let's say: 0 -&gt; none 1 -&gt; playing 2 -&gt; paused */ if (playback_state == 3) {playback_state = 1;} title = convertNull(title, ""); subtitle = convertNull(subtitle, ""); description = convertNull(description, ""); data = newMapFromValues("song", title, "artist", subtitle, "album", description, "state", playback_state, "position", playback_position, "duration", media_duration);</name>
+    <script>/* let's say:
+     0 -&gt; none
+     1 -&gt; playing
+     2 -&gt; paused
+*/
+if (playback_state == 3) {playback_state = 1;}
+
+title = convertNull(title, "");
+subtitle = convertNull(subtitle, "");
+description = convertNull(description, "");
+
+data = newMapFromValues("song", title, "artist", subtitle, "album", description, "state", playback_state, "position", playback_position, "duration", media_duration);</script>
+  </action>
+  <action type="script">
+    <useDefaultName>true</useDefaultName>
+    <name>Script: /* When a video is played after a song in a playlist, there's bug where the informed album name in the system corresponds to the one of the song played before. Therefore, to fix this, I'll just remove the album information when the icon aspect ratio is different than 1 (i.e. when the width != height). Though a video with this condition may exist, it's pretty rare, and even in that case it would be a one off in a bunch, so I'll consider this **acceptable enough**. */ if (icon != null) { width = callJavaMethod(icon, "android.graphics.Bitmap", "getWidth()"); height = callJavaMethod(icon, "android.graphics.Bitmap", "getHeight()"); if (width != height) { removeMapEntry(data,"album"); } }</name>
+    <script>/*
+    When a video is played after a song in a
+    playlist, there's bug where the informed album
+    name in the system corresponds to the one of
+    the song played before.
+    Therefore, to fix this, I'll just remove the
+    album information when the icon aspect ratio is
+    different than 1 (i.e. when the width != height).
+    Though a video with this condition may exist, 
+    it's pretty rare, and even in that case it would
+    be a one off in a bunch, so I'll consider this
+    **acceptable enough**.
+*/
+if (icon != null) {
+    width = callJavaMethod(icon, "android.graphics.Bitmap", "getWidth()");
+    height = callJavaMethod(icon, "android.graphics.Bitmap", "getHeight()");
+
+    if (width != height) {
+        removeMapEntry(data,"album");
+    }
+}</script>
+  </action>
+  <action type="write_to_log">
+    <useDefaultName>true</useDefaultName>
+    <name>Write to Log: Discord listening server unavailable.</name>
+    <text>Discord listening server unavailable.</text>
+  </action>
+  <flow type="flow">
+    <name>Discord + YT Music</name>
+    <enabled>true</enabled>
+    <executionPolicy>QUEUE</executionPolicy>
+    <emergencyStopCount>600000</emergencyStopCount>
+    <triggercontainer id="t1" x="105.0" y="-437.49997">
+      <trigger>Media Session Changed: com.google.android.apps.youtube.music</trigger>
+    </triggercontainer>
+    <actioncontainer id="t2" x="105.0" y="-297.5">Script: /* let's say: 0 -&gt; none 1 -&gt; playing 2 -&gt; paused */ if (playback_state == 3) {playback_state = 1;} title = convertNull(title, ""); subtitle = convertNull(subtitle, ""); description = convertNull(description, ""); data = newMapFromValues("song", title, "artist", subtitle, "album", description, "state", playback_state, "position", playback_position, "duration", media_duration);</actioncontainer>
+    <actioncontainer id="t3" x="105.00002" y="-157.50002">Script: /* When a video is played after a song in a playlist, there's bug where the informed album name in the system corresponds to the one of the song played before. Therefore, to fix this, I'll just remove the album information when the icon aspect ratio is different than 1 (i.e. when the width != height). Though a video with this condition may exist, it's pretty rare, and even in that case it would be a one off in a bunch, so I'll consider this **acceptable enough**. */ if (icon != null) { width = callJavaMethod(icon, "android.graphics.Bitmap", "getWidth()"); height = callJavaMethod(icon, "android.graphics.Bitmap", "getHeight()"); if (width != height) { removeMapEntry(data,"album"); } }</actioncontainer>
+    <actioncontainer id="t4" x="104.99996" y="122.499916">Write to Log: Discord listening server unavailable.</actioncontainer>
+    <actioncontainer id="t5" x="104.99998" y="-17.49998">HTTP Request: POST http://[server_ip]:15472 application/json {data,jsonformat} store in response</actioncontainer>
+    <connection from="t1" to="t2" type="NORMAL" sourcePosition="SOUTH" targetPosition="NORTH" />
+    <connection from="t2" to="t3" type="NORMAL" sourcePosition="SOUTH" targetPosition="NORTH" />
+    <connection from="t3" to="t5" type="NORMAL" sourcePosition="SOUTH" targetPosition="NORTH" />
+    <connection from="t5" to="t4" type="EXCEPTION" sourcePosition="SOUTH" targetPosition="NORTH" />
+  </flow>
+</data>
