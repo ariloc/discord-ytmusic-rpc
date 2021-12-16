@@ -117,7 +117,7 @@ For these kind of tasks, I think the most popular app is Tasker. Though in my ca
 
 However, I also made a working example in Automate by LlamaLab, [which you can get for free in the Play Store](https://play.google.com/store/apps/details?id=com.llamalab.automate&hl=en&gl=US).
 
-I'm **not related** to any of these apps, **nor promoting** them. I just use Automagic for other things, so it seemed convenient for me, and I thought it would also be nice making an alternative example in an app which is free, easier to download, and probably has a wider user base.
+I'm **not related** to any of these apps, **nor am I promoting** them. I just use Automagic for other things, so it seemed convenient for me, and I thought it would also be nice making an alternative example in an app which is free, easier to download, and probably has a wider user base.
 
 Both flows for each of the apps are included in the *automation* folder. Remember to change inside the flows where it says *server_ip* with the IP address of the computer running the executable. You can see how to import them in the apps, but you should be able to click them from a file manager and let it suggest you open it automatically with the automation app which will then import it accordingly.
 
