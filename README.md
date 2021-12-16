@@ -103,6 +103,14 @@ You can just reboot, wait a bit for Discord and Xorg to start properly, and you 
 
 WIP
 
-# Phone automation of the requests
+# Automation of the requests from the phone
 
-WIP
+For these kind of tasks, I think the most popular app is Tasker. Though in my case, I've made use of Automagic, which sadly isn't mantained anymore, but that means you can get it for free in its [website](https://automagic4android.com/download_en.html).
+
+However, I also made a working example in Automate by LlamaLab, [which you can get for free in the Play Store](https://play.google.com/store/apps/details?id=com.llamalab.automate&hl=en&gl=US).
+
+I'm **not related** to any of these apps, **nor promoting** them. I just use Automagic for other things, so it seemed convenient for me, and I thought it would also be nice making an alternative example in an app which is free, easier to download, and probably has a wider user base.
+
+Both flows for each of the apps are included in the *automation* folder.
+
+As I spent more time in the Automagic one, it also tries to fix a bug I noticed in YouTube Music, where the album name informed by the app gets stuck on the one from a previous song, when a video is played from the queue. To achieve this, I only send the album name in the JSON request whenever the thumbnail of the playing media has a 1: 1 aspect ratio, which is the one typically for the album art of actual songs (not videos). The possibility of a video with a 1: 1 aspect ratio playing exists, but the possibility seems very slim to me, and this is the most reliable method I could get to work, in order to differentiate between songs and videos playing. You can modify the flow as you please, whether you prefer or not this fix.
