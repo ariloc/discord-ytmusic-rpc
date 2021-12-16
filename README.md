@@ -109,6 +109,8 @@ Below there are some screenshots of the app and presence working.
 ![Song paused](/images/song-paused.png?raw=true "Song paused")
 ![Logs preview](/images/terminal-logs.png?raw=true "Logs preview")
 
+Note that foreign (non-latin) characters **should also be displayed correctly**, or at least they were in my testing.
+
 # Automation of the requests from the phone
 
 For these kind of tasks, I think the most popular app is Tasker. Though in my case, I've made use of Automagic, which sadly isn't mantained anymore, but that means you can get it for free in its [website](https://automagic4android.com/download_en.html).
@@ -120,3 +122,9 @@ I'm **not related** to any of these apps, **nor promoting** them. I just use Aut
 Both flows for each of the apps are included in the *automation* folder. Remember to change inside the flows where it says *server_ip* with the IP address of the computer running the executable. You can see how to import them in the apps, but you should be able to click them from a file manager and let it suggest you open it automatically with the automation app which will then import it accordingly.
 
 As I spent more time in the Automagic one, it also tries to fix a bug I noticed in YouTube Music, where the album name informed by the app gets stuck on the one from a previous song, when a video is played from the queue. To achieve this, I only send the album name in the JSON request whenever the thumbnail of the playing media has a 1:1 aspect ratio, which is the one typically for the album art of actual songs (not videos). The possibility of a video with a 1:1 aspect ratio playing exists, but the possibility seems very slim to me, and this is the most reliable method I could get to work, in order to differentiate between songs and videos playing. You can modify the flow as you please, whether you prefer or not this fix.
+
+# Final details
+
+For now, I would only suggest using this project inside your local area network. To make this feasable to be used through the internet, I think I would need to add some sort of token field with a unique character string you would use to validate any request, and maybe also support secure connections in some way. It's not that big of a deal if anyone wanted to change your Discord status, but I don't think it would be very fun if someone wanted to show information to your friends as if it were you.
+
+If you have any thoughts about this project, any issue you encounter or any suggestion, let me know! I can't guarantee I would be able to implement it (even less do it quickly), but I will try!
