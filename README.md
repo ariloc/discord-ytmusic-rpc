@@ -2,6 +2,8 @@
 A personal project to achieve that my Discord status shows my currently playing song on YouTube Music in my phone.
 This project is **not** in any way related or endorsed by Google nor Discord. It's neither related to any of the tools or libraries credited onward.
 
+**NOTE: REMEMBER TO DOWNLOAD THE `discord-rpc-buttons` SUBMODULE. The `build.sh` file uses the contents of the folder for its recompilation. For example, if you're using `git`, use the `--recurse-submodules` parameter of `git clone`.**
+
 # Introduction / What's this about
 
 In order to acheive this, after lots of googling, I've got to the conclusion that the best I can do is to run a Discord instance in a computer (ideally running 24/7, like some sort of home server), and run some code which will listen for HTTP requests with the required information in JSON format. It's not the best, but it should work. Of course, those requests will be made by my phone, where I'll be running some suitable automation app that will watch for any Media Session changes from the YouTube Music app, so it can automatically send the information through my LAN (initially, at least).
@@ -21,7 +23,7 @@ Anyway, hope you don't dislike my terrible code, and that all that should be cre
 
 # Compiling
 
-The `build.sh` file included should do all the work for you. It's nothing really fancy, but it should work. 
+The `build.sh` file included should do all the work for you. It's nothing really fancy, but it should work.
 
 First it checks (or at least it should) if you have installed the right dependencies. You'll need `g++`, `cmake` and `python3`. As far as I know, it should work with any version of `python3`, but I've tested it working with 
 
