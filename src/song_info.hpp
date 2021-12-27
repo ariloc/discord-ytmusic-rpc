@@ -16,7 +16,7 @@ struct songInfo {
 
 struct upd_struct {
     songInfo track;
-    std::string url = "";
+    std::string url = "", img_url = "";
     int duration = 0, elapsed = 0, state = 0;
 
     void print() {

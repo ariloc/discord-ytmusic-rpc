@@ -27,7 +27,7 @@ void updateDiscordPresence (upd_struct &u) {
             discordPresence.endTimestamp = time(0) + (u.duration - u.elapsed) / 1000; // add seconds to end of song
         }
 
-        discordPresence.largeImageKey = MAIN_IMG;
+        discordPresence.largeImageKey = (!u.img_url.empty() ? u.img_url.c_str() : MAIN_IMG); // display album cover image if provided
         discordPresence.smallImageKey = (u.state == 2 ? PAUSE_ICON : PLAY_ICON); // icon if paused or playing
         discordPresence.smallImageText = (u.state == 2 ? PAUSED_TXT : PLAYING_TXT); // icon text if paused or playing
         discordPresence.instance = (int)(u.state == 1); // if playing, you can say that the event is ongoing

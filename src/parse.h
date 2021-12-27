@@ -25,12 +25,12 @@ using json = nlohmann::json;
 static const char* BASE_URL = "https://music.youtube.com/watch?v=";
 
 /*
- * Given an `upd_struct` element with the track information, look for the specified
+ * Given the track name (string) look for the specified
  * song in the history of the user authenticated with the headers_auth.json file,
- * and update the `url` field with the obtained videoId.
- * If the song isn't found, leaves the field empty.
+ * and return a PyObject with the song metadata.
+ * If the song isn't found, returns a NULL pointer.
  */
-void getUrl (upd_struct &u, PyObject *ytmusic);
+PyObject* getMetadataHistory (std::string track_name, PyObject *ytmusic); // TODO: check if description is OK.
 
 /*
  * Parses the JSON received in a request, checks for validity, and builds an
