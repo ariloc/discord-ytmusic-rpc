@@ -24,10 +24,11 @@ PyObject* getMetadataHistory (std::string track_name, PyObject *ytmusic) {
         PyObject *item = PyList_GetItem(history,i);
 
         PyObject *song_name_py = PyDict_GetItemString(item,"title");
+        std::string song_name = "";
+        if (song_name_py != NULL)
+            song_name = PyBytes_AsString(PyUnicode_AsEncodedString(song_name_py, "UTF-8", "strict"));
 
-        std::string song_name = PyBytes_AsString(PyUnicode_AsEncodedString(song_name_py, "UTF-8", "strict"));
-
-        if (song_name == track_name) return item;
+        if (!song_name.empty() && song_name == track_name) return item;
     }
     return NULL;
 }
@@ -66,33 +67,36 @@ int parseRequest (char* request, PyObject *ytmusic) {
         cacheMap.max_cache = MAX_CACHE;
 
         std::pair<std::string, std::string> mapEntry = {"",""};
-        try { // TODO: consider using basic_json::contains() instead
+        try {
             toSend.url = j.at("url");
             toSend.img_url = j.at("img_url");
         } 
         catch (...) { // if url for song or cover not included, let's (try) to get it ourselves!
 
-            // first try finding it inside the cache
+            // first try finding a match for the song inside the cache
             auto it = cacheMap.find(toSend.track);
             if (it != cacheMap.end()) mapEntry = (*it).first;
             else { // get the fields I want from the metadata
                 PyObject* songMetadata = getMetadataHistory(toSend.track.name, ytmusic);
 
                 if (songMetadata != NULL) {
-                    std::string videoURL = BASE_URL;
-                    std::string videoId = PyBytes_AsString(PyUnicode_AsEncodedString( PyDict_GetItemString(songMetadata,"videoId"), "UTF-8", "strict"));
+                    std::string videoURL = BASE_URL, imageURL = "";
+
+                    std::string videoId = PyBytes_AsString(PyUnicode_AsEncodedString(PyDict_GetItemString(songMetadata,"videoId"), "UTF-8", "strict"));
                     if (!videoId.empty()) videoURL += videoId;
                     else videoURL = "";
 
-                    std::string imageURL = PyBytes_AsString(PyUnicode_AsEncodedString(
-                                                        PyDict_GetItemString( 
-                                                                PyList_GetItem( PyDict_GetItemString(songMetadata,"thumbnails"), 0) , "url"), // "=w60-h60-s-l90"
-                                                        "UTF-8", "strict"));
+                    PyObject *thumbnail_info = PyList_GetItem(PyDict_GetItemString(songMetadata,"thumbnails"), 0);
+                    if (thumbnail_info != NULL) { // if list not empty                        
+                        imageURL = PyBytes_AsString(PyUnicode_AsEncodedString(
+                                                        PyDict_GetItemString(thumbnail_info, "url"), 
+                                                            "UTF-8", "strict"));
 
-                    if (!imageURL.empty()) {
-                        auto posReplace = imageURL.find("=w60-h60-s-l90");
-                        if (posReplace != std::string::npos)
-                            imageURL.replace(posReplace, 12, "=w1024-h1024-s-l100"); // TODO: clean up, pass to const variables
+                        auto queryStart = imageURL.find('=');
+                        if (queryStart != std::string::npos) { // get core url
+                            imageURL = imageURL.substr(0, queryStart+1);
+                            imageURL += "w1024-h1024-l100-s"; // append my query (1024x1024, quality 100%)
+                        }
                     }
 
                     mapEntry = {videoURL, imageURL};
@@ -106,7 +110,9 @@ int parseRequest (char* request, PyObject *ytmusic) {
         try {toSend.img_url = j.at("img_url");}
         catch (...) {toSend.img_url = mapEntry.second;}
 
-        if (!mapEntry.first.empty()) // most likely if we have the url, we also have the cover url
+        // most likely if we have the url, we also have the cover url
+        // otherwise would be empty, and default image will be shown
+        if (!mapEntry.first.empty())
             cacheMap.insert(toSend.track, mapEntry);
     }
 

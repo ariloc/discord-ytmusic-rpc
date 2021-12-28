@@ -34,6 +34,9 @@ struct upd_struct {
 
             if (url.empty()) puts("No URL provided.");
             else printf("URL: %s\n",url.c_str());
+
+            if (img_url.empty()) puts("No cover image URL provided.");
+            else printf("Cover URL: %s\n",img_url.c_str());
         }
     }
 };
