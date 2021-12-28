@@ -16,6 +16,7 @@
     - "position": (optional) number of millis transcurred since the start of the song 
     - "duration": (optional) number of millis representing the duration of the song
     - "url": (optional) the link to the song in YouTube Music
+    - "img_url": (optional) the link to the album cover of the currently playing song
 */
 
 #include "../include/json.hpp"
@@ -35,7 +36,7 @@ PyObject* getMetadataHistory (std::string track_name, PyObject *ytmusic); // TOD
 /*
  * Parses the JSON received in a request, checks for validity, and builds an
  * `upd_struct` element containing the information.
- * Calls getUrl() if no url provided in the request.
+ * Calls getMetadataHistory() if no url or cover image url provided in the request.
  * Once all possible fields filled, calls updateDiscordPresence() to update
  * the Rich Presence status in Discord.
  * Returns 1 on error, 0 on success.
