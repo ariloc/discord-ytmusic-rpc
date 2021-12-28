@@ -57,6 +57,7 @@ The program expects HTTP requests with a JSON formatted content. It really just 
 * `duration`: **\[optional\]** An integer representing the duration of the song, expressed in millis.
 * `position`: **\[optional\]** An integer representing the amount of time elapsed from the start of the song, expressed in millis. Both `duration` and `position` need to be provided to show any time-related information.
 * `url`: **\[optional\]** A *VALID* link to the song. If the provided link is invalid, rich presence may not be shown. Otherwise if missing, it will be automatically fetched from the song history if the authentication headers are properly setup.
+* `img_url`: **\[optional\]** A *VALID* link to an image of the album cover for the currently playing song. If missing, it will be automatically fetched in the same way described for the `url`. Thanks to the user [Bas950](https://github.com/Bas950) for [this commit](https://github.com/PreMiD/Presences/commit/b90ed56099c56220571f6b85b1f046e600e592a5#diff-8ddd6dbf8e05c89eb790399a539a8c6fc14fda6a18135104784447b036cb2b46) to the PreMiD YouTube Music integration in the [Presences repo](https://github.com/PreMiD/Presences), as it brought me info about Discord allowing for links to be used in presences, and how to implement it.
 
 # Set up Xorg and Discord
 
