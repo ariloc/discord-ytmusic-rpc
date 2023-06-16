@@ -1,5 +1,6 @@
 #include <string>
 #include <cstring>
+#include <ctime>
 
 #include "presence.h"
 #include "song_info.hpp"

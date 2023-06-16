@@ -33,15 +33,21 @@ After all of that, the script tries to erase all build files included in the dis
 
 Once that's done, it runs `make` which compiles the actual source files and links them with the corresponding libraries, leaving you with a `discord-ytmusic-rpc` executable in the main folder.
 
-# Making it work
+# Getting it working
 
-The only step remaining to make it work fully is to get the `headers_auth.json` file. The purpose of this file is to be able to perform authenticated requests in your Google account, and fetch your song history. How to get it [it's better explained in the unofficial YouTube Music API documentation](https://ytmusicapi.readthedocs.io/en/latest/setup.html). For reference, I got mine by running a python interactive shell, importing the library, and using the `setup(filepath="")` command as described in the aforementioned link. After that, you can just copy the file whereever you want, and remember to specify the path as an argument to the executable. As an example, if you're using Linux and the file is in the same folder, you can run the program the following way:
+The only step remaining to get it working fully is to create the `headers_auth.json` file. The purpose of this file is to be able to perform authenticated requests in your Google account, and fetch your song history. How to get it [it's better explained in the unofficial YouTube Music API documentation](https://ytmusicapi.readthedocs.io/en/latest/setup.html). For reference, I got mine by running a python interactive shell, importing the library, and using the `setup(filepath="")` command as described in the aforementioned link. After that, you can just copy the file whereever you want, and remember to specify the path as an argument to the executable. As an example, if you're using Linux and the file is in the same folder, you can run the program the following way:
 
 ```
 ./discord-ytmusic-rpc "./headers_auth.json"
 ```
 
-This is, again, for the purpose of getting the exact URL to the song you're actually playing. Bear in mind this is not foolproof, and sometimes the request may be faster than the history gets updated (and therefore the "Listen Along" button won't be shown), so maybe you would want to have a little bit of delay on your requests from your phone. Also note that rich presence updates are limited to one in 15 seconds [as stated in the documentation](https://discord.com/developers/docs/rich-presence/how-to), so it's also to expect if an update isn't refflected immediately if you throw a bunch of them too quickly.
+This is, again, for the purpose of getting the exact URL to the song you're actually playing. Bear in mind this is not foolproof, and sometimes the request may be faster than the history gets updated (and therefore the "Listen Along" button won't be shown), so maybe you would want to have a little bit of delay on your requests from your phone. Also note that rich presence updates are limited to one in 15 seconds [as stated in the documentation](https://discord.com/developers/docs/rich-presence/how-to), so it's also to expect if an update isn't reflected immediately if you throw a bunch of them too quickly.
+
+You can also provide the language with which the results of your song history will be fetched with. This is important if the language on your phone is other than English, as titles for songs may vary from language to language. Therefore, if not set correctly, song information received by the program may not match the queried results, thus preventing the album image and song url from loading properly. Supported languages are listed by the folder names in [the locales directory inside the unofficial YT Music API repository](https://github.com/sigma67/ytmusicapi/tree/master/ytmusicapi/locales). For example, running the program as follows will query the history results in Japanese:
+
+```
+./discord-ytmusic-rpc "./headers_auth.json" "ja"
+```
 
 About the requests, the program by default listens in port `15472` (no reason, just an arbitrary number). If you want to change it, it's defined in the `socket.h` file. I know it's not the best to have constants in header files... but it works and I spent already much more time into this that I should've.
 
