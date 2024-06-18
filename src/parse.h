@@ -31,7 +31,7 @@ static const char* BASE_URL = "https://music.youtube.com/watch?v=";
  * and return a PyObject with the song metadata.
  * If the song isn't found, returns a NULL pointer.
  */
-PyObject* getMetadataHistory (std::string track_name, PyObject *ytmusic); // TODO: check if description is OK.
+PyObject* getMetadataHistory (std::string track_name, PyObject *ytmusic);
 
 /*
  * Parses the JSON received in a request, checks for validity, and builds an

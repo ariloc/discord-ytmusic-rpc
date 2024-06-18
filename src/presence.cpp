@@ -4,8 +4,14 @@
 
 #include "presence.h"
 #include "song_info.hpp"
+#include "idle_timer.h"
 
 #include "../include/discord_rpc.h"
+
+static IdleTimer idleTimer = IdleTimer([](){
+    puts("Idle timer timeout reached. Clearing presence.");
+    clearPresence();
+});
 
 void discordInit() {
     DiscordEventHandlers handlers;
@@ -13,8 +19,13 @@ void discordInit() {
     Discord_Initialize(APPLICATION_ID, &handlers, 0, NULL);
 }
 
+void clearPresence() { Discord_ClearPresence(); }
+
 void updateDiscordPresence (upd_struct &u) {
-    if (!u.state) Discord_ClearPresence();
+    if (!u.state) {
+        clearPresence();
+        idleTimer.cancel();
+    }
     else {
         DiscordRichPresence discordPresence;
         memset(&discordPresence, 0, sizeof(discordPresence));
@@ -39,5 +50,6 @@ void updateDiscordPresence (upd_struct &u) {
         }
 
         Discord_UpdatePresence(&discordPresence);
+        idleTimer.start();
     }
 }
