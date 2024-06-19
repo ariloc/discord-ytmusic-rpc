@@ -8,7 +8,7 @@ OBJS := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
 CXX = g++
 CPPFLAGS := $(shell python3-config --cflags) -Iinclude -MMD -MP
-CXXFLAGS := -Wall -fPIE
+CXXFLAGS := -std=c++17 -Wall -fPIE
 LDLIBS := -lpthread -ldiscord-rpc
 LDFLAGS := -Llib $(shell python3-config --ldflags --embed)
 
