@@ -27,7 +27,7 @@ The `build.sh` file included should do all the work for you. It's nothing really
 
 First it checks (or at least it should) if you have installed the right dependencies. You'll need `g++`, `cmake` and `python3`. As far as I know, it should work with any version of `python3`, but I've tested it working with 
 
-Also, about python, you'll need the unofficial YouTube Music API module by [sigma67](https://github.com/sigma67/). If you skipped the introduction, [here's the repo again](https://github.com/sigma67/ytmusicapi) and you can follow [here](https://ytmusicapi.readthedocs.io/en/latest/setup.html) instructions in how to install it.
+Also, about python, you'll need the unofficial YouTube Music API module by [sigma67](https://github.com/sigma67/). If you skipped the introduction, [here's the repo again](https://github.com/sigma67/ytmusicapi) and you can follow [here](https://ytmusicapi.readthedocs.io/en/stable/setup/index.html) instructions in how to install it.
 
 After all of that, the script tries to erase all build files included in the discord-rpc-buttons library, the static library in the /lib folder and includes in the /include folder, to then recompile it all, just for good measure.
 
@@ -35,7 +35,7 @@ Once that's done, it runs `make` which compiles the actual source files and link
 
 # Getting it working
 
-The only step remaining to get it working fully is to create the `headers_auth.json` file. The purpose of this file is to be able to perform authenticated requests in your Google account, and fetch your song history. How to get it [it's better explained in the unofficial YouTube Music API documentation](https://ytmusicapi.readthedocs.io/en/latest/setup.html). For reference, I got mine by running a python interactive shell, importing the library, and using the `setup(filepath="")` command as described in the aforementioned link. After that, you can just copy the file whereever you want, and remember to specify the path as an argument to the executable. As an example, if you're using Linux and the file is in the same folder, you can run the program the following way:
+The only step remaining to get it working fully is to create the `headers_auth.json` file. The purpose of this file is to be able to perform authenticated requests in your Google account, and fetch your song history. How to get it [it's better explained in the unofficial YouTube Music API documentation](https://ytmusicapi.readthedocs.io/en/stable/setup/index.html). For reference, I got mine by running a python interactive shell, importing the library, and using the `setup(filepath="")` command as described in the aforementioned link. After that, you can just copy the file whereever you want, and remember to specify the path as an argument to the executable. As an example, if you're using Linux and the file is in the same folder, you can run the program the following way:
 
 ```
 ./discord-ytmusic-rpc "./headers_auth.json"
@@ -43,7 +43,7 @@ The only step remaining to get it working fully is to create the `headers_auth.j
 
 This is, again, for the purpose of getting the exact URL to the song you're actually playing. Bear in mind this is not foolproof, and sometimes the request may be faster than the history gets updated (and therefore the "Listen Along" button won't be shown), so maybe you would want to have a little bit of delay on your requests from your phone. Also note that rich presence updates are limited to one in 15 seconds [as stated in the documentation](https://discord.com/developers/docs/rich-presence/how-to), so it's also to expect if an update isn't reflected immediately if you throw a bunch of them too quickly.
 
-You can also provide the language with which the results of your song history will be fetched with. This is important if the language on your phone is other than English, as titles for songs may vary from language to language. Therefore, if not set correctly, song information received by the program may not match the queried results, thus preventing the album image and song url from loading properly. Supported languages are listed by the folder names in [the locales directory inside the unofficial YT Music API repository](https://github.com/sigma67/ytmusicapi/tree/master/ytmusicapi/locales). For example, running the program as follows will query the history results in Japanese:
+You can also provide the language with which the results of your song history will be fetched with. This is important if the language on your phone is other than English, as titles for songs may vary from language to language. Therefore, if not set correctly, song information received by the program may not match the queried results, thus preventing the album image and song url from loading properly. Supported languages are listed by the folder names in [the locales directory inside the unofficial YT Music API repository](https://github.com/sigma67/ytmusicapi/tree/main/ytmusicapi/locales). For example, running the program as follows will query the history results in Japanese:
 
 ```
 ./discord-ytmusic-rpc "./headers_auth.json" "ja"
