@@ -18,6 +18,11 @@ static const char *LISTEN_ALONG_TXT = "Listen Along";
 void discordInit();
 
 /*
+ * Clear Discord Rich Presence.
+ */
+void clearPresence();
+
+/*
  * Update Discord Rich Presence with specified update information included in `u`.
  */
 void updateDiscordPresence (upd_struct &u);

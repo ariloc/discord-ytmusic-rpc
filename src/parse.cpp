@@ -115,7 +115,6 @@ int parseRequest (char* request, PyObject *ytmusic) {
             cacheMap.insert(toSend.track, mapEntry);
     }
 
-    // TODO: show image url in print
     toSend.print(); // show update received
     
     // all good if I got to here
